@@ -30,10 +30,39 @@ if(isset($_SESSION["user"])){
         include './views/menu.php';
     }
     else if(isset ($_POST["del"])){
+        foreach ($_POST["del"] as $id => $v) {
+            $book = $user->getBooks()->getByProperty("id",$id);
+            if ($book->delete(BD::getConexion())){
+                $user->getBooks()->removeByProperty("id", $id);
+            }
+        }
         
+        include './views/menu.php';
     }
     else if(isset ($_POST["xml"])){
         
+$inv = <<<XML
+<?xml version='1.0' standalone='yes'?>
+<inventarioLibros>
+</inventarioLibros>
+XML;
+
+$xml = new SimpleXMLElement($inv);
+
+while($b = $user->getBooks()->iterate()){
+    $book=$xml->addChild("book");
+    $book->addChild("name", $b->getName());
+    $book->addChild("editorial", $b->getEdit());
+    $book->addChild("writter", $b->getWritter());
+    $book->addChild("year", $b->getYear());
+    $book->addChild("pages", $b->getPages());
+}
+
+$fichero =  $xml->asXML();
+$archivo = fopen("xml/books.xml", "w+");
+fwrite($archivo, $fichero);
+
+include './views/menu.php';
     }
     else{
         include './views/menu.php';

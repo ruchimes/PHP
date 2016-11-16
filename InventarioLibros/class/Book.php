@@ -41,6 +41,16 @@ class Book {
         $insert = $bd->prepare($query);
         $check = $insert->execute(array(":name"=>  $this->name, ":edit"=>  $this->edit,
             ":writter"=>  $this->writter,":year"=>  $this->year,":pages"=>  $this->pages,":user"=>  $this->user));
+        if($check){
+            $this->id = $bd->lastInsertId();
+        }
+        return $check;
+    }
+    
+    public function delete($bd){
+        $query = "DELETE FROM `book` WHERE `id` = :id";
+        $delete = $bd->prepare($query);
+        $check = $delete->execute(array(":id"=> $this->id));
         return $check;
     }
     

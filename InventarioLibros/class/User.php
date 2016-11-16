@@ -18,25 +18,25 @@ class User {
         $this->books = $books;
     }
     
-    public static function getByCredentials($bd,$user,$pass){
+    public static function getByCredentials($bd,$userName,$pass){
         
-        $query = "SELECT * FROM `user` WHERE `user` = :user AND `pass` = :pass ";
+        $query = "SELECT * FROM `user` WHERE `userName` = :userName AND `pass` = :pass ";
         $select = $bd->prepare($query);
         $select->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, "User");
-        $select->execute(array(":user"=>$user, ":pass"=>$pass));
+        $select->execute(array(":userName"=>$userName, ":pass"=>$pass));
         $user = $select->fetch();
         
         if($user){
-            $books = Book::getByUserID(BD::getConexion(), $user->getId());
+            $books = Book::getByUserID($bd, $user->getId());
             $user->setBooks($books);
         }
         return $user;
     }
     
     public function persist($bd){
-        $query = "INSERT INTO `user`(`user`, `pass`) VALUES (:user,:pass)";
+        $query = "INSERT INTO `user`(`userName`, `pass`) VALUES (:userName,:pass)";
         $insert = $bd->prepare($query);
-        $check = $insert->execute(array(":user"=>  $this->userName, ":pass"=>  $this->pass));
+        $check = $insert->execute(array(":userName"=>  $this->userName, ":pass"=>  $this->pass));
         return $check;
     }
     

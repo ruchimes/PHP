@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<inventarioLibros> 
+    <book>
+        <name>new</name>
+        <editorial>asd</editorial>
+        <writter>asd</writter>
+        <year>123</year>
+        <pages>123</pages>
+    </book>
+</inventarioLibros>
