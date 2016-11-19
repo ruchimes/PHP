@@ -103,7 +103,6 @@ class League {
         
         while($day = $this->days->iterate()){
            
-            
             $class = $day->classification();
             
             foreach ($class as $name => $value) {
